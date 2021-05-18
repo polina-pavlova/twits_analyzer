@@ -55,28 +55,19 @@ def make_arguments_parser():
     return parser.parse_args()
 
 
-def user_analysis(username: str):
+def user_analysis(username: str, plot: str, model: str):
     os.mkdir(f"./users_base/{username}")
     download_user_tweets(username)
     print(f"Draw charts with @{username} sentiment analysis\n")
     if plot == "ascii":
         ascii_plots(username)
-    png_plots(username)
+    png_plots(username, model)
     print(
         f"You can find all plots with @{username} sentiment analysis in users_base/{username} folder"
     )
 
 
-if __name__ == "__main__":
-    print(
-        """
-    ##############################################
-    #              Tweets sentiment              #
-    #                  analysis                  #
-    ##############################################\n
-    """
-    )
-    users = os.listdir("./users_base/")
+def main():
     args = make_arguments_parser()
     username = args.username
     plot = args.plot
@@ -98,4 +89,16 @@ if __name__ == "__main__":
         )
 
     else:
-        user_analysis(username)
+        user_analysis(username, plot, model)
+
+if __name__ == "__main__":
+    print(
+        """
+    ##############################################
+    #              Tweets sentiment              #
+    #                  analysis                  #
+    ##############################################\n
+    """
+    )
+    users = os.listdir("./users_base/")
+    main()
