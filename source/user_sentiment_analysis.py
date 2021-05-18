@@ -39,8 +39,10 @@ def user_sentiment_neural_network(username: str):
     tweets_for_prediction = pad_sequences(
         tokenizer.texts_to_sequences(user_data.tweet), maxlen=30
     )
-    user_data['predictions'] = nn_model.predict(tweets_for_prediction)
-    user_data["Sentiment"] = user_data.predictions.apply(lambda score: "Positive" if score > 0.5 else "Negative")
+    user_data["predictions"] = nn_model.predict(tweets_for_prediction)
+    user_data["Sentiment"] = user_data.predictions.apply(
+        lambda score: "Positive" if score > 0.5 else "Negative"
+    )
     return user_data
 
 

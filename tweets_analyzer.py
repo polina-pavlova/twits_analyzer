@@ -91,6 +91,7 @@ def main():
     else:
         user_analysis(username, plot, model)
 
+
 if __name__ == "__main__":
     print(
         """
