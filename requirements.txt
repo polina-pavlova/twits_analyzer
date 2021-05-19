@@ -31,3 +31,4 @@ termplotlib==0.3.4
 twint==2.1.21
 aiohttp==3.7.4.post0
 Keras==2.4.3
+silence_tensorflow==1.1.1

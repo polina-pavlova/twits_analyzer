@@ -5,7 +5,7 @@ import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
-nltk.download("stopwords")
+nltk.download("stopwords", quiet=True)
 
 stop_words = stopwords.words("english")
 stemmer = PorterStemmer()
