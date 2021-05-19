@@ -138,12 +138,12 @@ cd twits_analyzer
 Установка зависимостей:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 Для установки twint стоит использовать команду:
 ```bash
-pip install --user --upgrade git+https://github.com/twintproject/twint.git@origin/master#egg=twint
+pip3 install --user --upgrade git+https://github.com/twintproject/twint.git@origin/master#egg=twint
 ```
 
 **_NB!_** Перед использованием приложения распаковать файл
