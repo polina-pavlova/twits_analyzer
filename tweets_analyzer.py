@@ -15,15 +15,6 @@ def make_arguments_parser():
     parser = argparse.ArgumentParser(
         description="Application for sentiment analysis of tweets published since the beginning of 2021"
     )
-
-    parser.add_argument(
-        "-u",
-        "--username",
-        dest="username",
-        help="Twitter username for sentiment analysis",
-        required=False,
-        type=str,
-    )
     parser.add_argument(
         "-p",
         "--plot",
@@ -44,17 +35,22 @@ def make_arguments_parser():
         choices=["glm", "nn"],
         type=str,
     )
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        "-u",
+        "--username",
+        dest="username",
+        help="Twitter username for sentiment analysis",
+        required=False,
+        type=str,
+    )
+    group.add_argument(
         "-l",
         "--users_list",
         dest="users_in_base",
+        action="store_true",
         help="Print list of users presented in base. Default - False.",
-        required=False,
-        type=bool,
-        default=False,
-        choices=[True, False],
     )
-
     return parser.parse_args()
 
 
@@ -62,7 +58,7 @@ def user_analysis(username: str, plot: str, model: str, users: list):
     if username not in users:
         os.mkdir(f"./users_base/{username}")
 
-    if model in os.listdir(f"./users_base/{username}"):  # username in users and
+    if model in os.listdir(f"./users_base/{username}"):
         print(
             f"@{username}'s tweets analysis with {model} is in folder users_base/{username}/{model}"
         )
@@ -90,12 +86,11 @@ def main():
         print("Users below are in base:")
         print("\n".join(users))  # noqa
 
-    if not username:
-        raise ArgumentError(
-            f"Username in twitter is needed for semantics analysis. Following users are presented in users_base folder: {users}"
-        )
-
     else:
+        if not username:
+            raise ArgumentError(
+                f"Username in twitter is needed for semantics analysis. Following users are presented in users_base folder: {users}"
+            )
         user_analysis(username, plot, model, users)
 
 

@@ -16,8 +16,7 @@ def load_user_data(username: str):
     user_data["Month"] = user_data.date.apply(lambda x: x.split("-")[1])
     user_data.Month = user_data.Month.apply(lambda m: calendar.month_name[int(m)])
     user_data.tweet = text_processing(user_data.tweet)
-    user_data = user_data[["date", "tweet", "Month"]]
-    return user_data
+    return user_data[["date", "tweet", "Month"]]
 
 
 def user_sentiment_analysis_log_reg(username: str):
@@ -34,7 +33,7 @@ def user_sentiment_neural_network(username: str):
     nn_model = load_model("./model/best_model.hdf5", compile=False)
     nn_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
     user_data = load_user_data(username)
-    tokenizer = pickle.load(open("./model/tokenizer_for_NN.nn", "rb") # noqa
+    tokenizer = pickle.load(open("./model/tokenizer_for_NN.nn", "rb"))  # noqa
     tweets_for_prediction = pad_sequences(
         tokenizer.texts_to_sequences(user_data.tweet), maxlen=30
     )

@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
 
-def process_data(data):
+def process_data(data: pd.DataFrame):
     data.rename(columns={0: "polarity", 5: "text"}, inplace=True)
     data["polarity"] = data["polarity"].map({0: 0, 4: 1})
     data.text = text_processing(data.text)
@@ -23,7 +23,7 @@ def load_data(path_to_data: str):
     return process_data(data)
 
 
-def log_regression_model(data):
+def log_regression_model(data: pd.DataFrame):
     x_train, x_test, y_train, y_test = train_test_split(
         data.text, data.polarity, test_size=0.2, stratify=data.polarity, random_state=42
     )

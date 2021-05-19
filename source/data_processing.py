@@ -1,6 +1,7 @@
 import re
 
 import nltk
+import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 
@@ -10,7 +11,7 @@ stop_words = stopwords.words("english")
 stemmer = PorterStemmer()
 
 
-def text_processing(data):
+def text_processing(data: pd.Series):
     data = data.str.lower()  # lower register
     data = data.apply(lambda tweet: re.sub(r"@\S+", "", tweet))  # usernames
     data = data.apply(lambda tweet: re.sub(r"https?://\S+", "", tweet))  # urls
@@ -25,5 +26,4 @@ def text_processing(data):
     )  # delete characters repeated more frequent than 2 times.
     data = data.apply(lambda tweet: [stemmer.stem(word) for word in tweet])  # stemming
     data = data.apply(lambda tweet: [word for word in tweet if word != ""])
-    data = data.apply(lambda tweet: " ".join(tweet))
-    return data
+    return data.apply(lambda tweet: " ".join(tweet))
