@@ -28,43 +28,54 @@ def make_arguments_parser():
         "-p",
         "--plot",
         dest="plot",
-        help="Type of bar charts with user statistics (png/ascii). Default - ascii.",
+        help="Type of bar charts with user statistics. Default - png.",
         required=False,
         default="png",
+        choices=["png", "ascii"],
         type=str,
     )
     parser.add_argument(
         "-m",
         "--model",
         dest="model",
-        help="Choose desired model: glm (for logistic regeression model) or nn (for LSTM neural network model). Default - glm.",
+        help="Choose desired model: glm (logistic regression model) or nn (LSTM neural network). Default - glm.",
         required=False,
         default="glm",
+        choices=["glm", "nn"],
         type=str,
     )
     parser.add_argument(
         "-l",
         "--users_list",
         dest="users_in_base",
-        help="Print list of users presented in base (True/False). Default - False.",
+        help="Print list of users presented in base. Default - False.",
         required=False,
         type=bool,
         default=False,
+        choices=[True, False],
     )
 
     return parser.parse_args()
 
 
-def user_analysis(username: str, plot: str, model: str):
-    os.mkdir(f"./users_base/{username}")
-    download_user_tweets(username)
-    print(f"Draw charts with @{username} sentiment analysis\n")
-    if plot == "ascii":
-        ascii_plots(username)
-    png_plots(username, model)
-    print(
-        f"You can find all plots with @{username} sentiment analysis in users_base/{username} folder"
-    )
+def user_analysis(username: str, plot: str, model: str, users: list):
+    if username not in users:
+        os.mkdir(f"./users_base/{username}")
+
+    if model in os.listdir(f"./users_base/{username}"):  # username in users and
+        print(
+            f"@{username}'s tweets analysis with {model} is in folder users_base/{username}/{model}"
+        )
+    else:
+        os.mkdir(f"./users_base/{username}/{model}")
+        download_user_tweets(username)
+        print(f"Draw charts with @{username} sentiment analysis\n")
+        if plot == "ascii":
+            ascii_plots(username, model)
+        png_plots(username, model)
+        print(
+            f"You can find all plots with @{username} sentiment analysis in users_base/{username} folder"
+        )
 
 
 def main():
@@ -73,6 +84,7 @@ def main():
     plot = args.plot
     model = args.model
     users_in_base = args.users_in_base
+    users = os.listdir("./users_base/")
 
     if users_in_base:
         print("Users below are in base:")
@@ -83,13 +95,8 @@ def main():
             f"Username in twitter is needed for semantics analysis. Following users are presented in users_base folder: {users}"
         )
 
-    elif username in users:
-        print(
-            f"@{username}'s tweets analysis with all charts are in folder users_base/{username}"
-        )
-
     else:
-        user_analysis(username, plot, model)
+        user_analysis(username, plot, model, users)
 
 
 if __name__ == "__main__":
@@ -101,5 +108,4 @@ if __name__ == "__main__":
     ##############################################\n
     """
     )
-    users = os.listdir("./users_base/")
     main()

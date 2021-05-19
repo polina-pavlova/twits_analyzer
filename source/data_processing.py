@@ -11,7 +11,7 @@ stemmer = PorterStemmer()
 
 
 def text_processing(data):
-    data = data.apply(lambda tweet: tweet.lower())  # lower register
+    data = data.str.lower()  # lower register
     data = data.apply(lambda tweet: re.sub(r"@\S+", "", tweet))  # usernames
     data = data.apply(lambda tweet: re.sub(r"https?://\S+", "", tweet))  # urls
     data = data.apply(lambda tweet: re.sub(r"#\S+", "", tweet))  # hashtags

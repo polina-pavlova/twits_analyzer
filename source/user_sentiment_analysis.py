@@ -6,7 +6,6 @@ import pandas as pd
 import seaborn as sns
 import termplotlib as tpl
 from keras.preprocessing.sequence import pad_sequences
-from keras.preprocessing.text import Tokenizer
 from tensorflow.keras.models import load_model
 
 from source.data_processing import text_processing
@@ -35,10 +34,7 @@ def user_sentiment_neural_network(username: str):
     nn_model = load_model("./model/best_model.hdf5", compile=False)
     nn_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
     user_data = load_user_data(username)
-    train_data = pd.read_csv('./model/train_data_for_predictions.csv')
-    # tokenizer = Tokenizer()
-    # tokenizer.fit_on_texts(train_data.text)
-    tokenizer = pickle.load(open('./model/tokenizer_for_NN.nn', 'rb'))
+    tokenizer = pickle.load(open("./model/tokenizer_for_NN.nn", "rb") # noqa
     tweets_for_prediction = pad_sequences(
         tokenizer.texts_to_sequences(user_data.tweet), maxlen=30
     )
@@ -64,7 +60,7 @@ def png_plots(username: str, model: str):
     sns.catplot(x="Sentiment", kind="count", data=user_data, palette="tab10")
     plt.title(f"@{username}'s tweets emotions distribution")
     plt.savefig(
-        f"./users_base/{username}/{username}_tweets_sentiment.png",
+        f"./users_base/{username}/{model}/{username}_tweets_sentiment.png",
         format="png",
         bbox_inches="tight",
     )
@@ -78,14 +74,14 @@ def png_plots(username: str, model: str):
     )
     plt.title(f"@{username} tweets emotions per month")
     plt.savefig(
-        f"./users_base/{username}/{username}_tweets_sentiment_per_month.png",
+        f"./users_base/{username}/{model}/{username}_tweets_sentiment_per_month.png",
         format="png",
         bbox_inches="tight",
     )
 
 
-def ascii_plots(username: str):
-    user_data = get_user_data_for_desired_model(username)
+def ascii_plots(username: str, model: str):
+    user_data = get_user_data_for_desired_model(username, model)
     counts = pd.value_counts(user_data.Sentiment)
     counts = pd.DataFrame(counts)
     fig = tpl.figure()
@@ -93,7 +89,7 @@ def ascii_plots(username: str):
     fig.barh(counts.Sentiment, list(counts.index), force_ascii=False)
     fig.show()
     with open(
-        f"./users_base/{username}/{username}'s_tweets_sentiment_ascii.txt", "w"
+        f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_ascii.txt", "w"
     ) as f:
         f.write(fig.get_string())
 
@@ -103,7 +99,7 @@ def ascii_plots(username: str):
     fig.barh(counts.Sentiment, list(counts.index), force_ascii=False)
     fig.show()
     with open(
-        f"./users_base/{username}/{username}'s_tweets_sentiment_per_month_ascii.txt",
+        f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_per_month_ascii.txt",
         "w",
     ) as f:
         f.write(fig.get_string())
