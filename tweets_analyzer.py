@@ -6,17 +6,25 @@ from source.get_user_tweets import download_user_tweets
 from source.user_sentiment_analysis import ascii_plots, png_plots
 
 
-class ArgumentError(Exception):
-    """
-    Username in twitter is required for sentiment analysis
-    """
-
-
 def make_arguments_parser():
     parser = argparse.ArgumentParser(
         description="Application for sentiment analysis of tweets published since the beginning of 2021"
     )
-    parser.add_argument("-v", "--verbose", help="Verbose output", action="store_true")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        "-u",
+        "--username",
+        dest="username",
+        help="Twitter username for sentiment analysis",
+        required=False,
+        type=str,
+    )
+    group.add_argument(
+        "-l",
+        "--users_list",
+        action="store_true",
+        help="Print list of users presented in base",
+    )
     parser.add_argument(
         "-p",
         "--plot",
@@ -37,21 +45,7 @@ def make_arguments_parser():
         choices=["glm", "nn"],
         type=str,
     )
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument(
-        "-u",
-        "--username",
-        dest="username",
-        help="Twitter username for sentiment analysis",
-        required=False,
-        type=str,
-    )
-    group.add_argument(
-        "-l",
-        "--users_list",
-        action="store_true",
-        help="Print list of users presented in base. Default - False.",
-    )
+    parser.add_argument("-v", "--verbose", help="Verbose output", action="store_true")
     return parser.parse_args()
 
 
@@ -90,10 +84,6 @@ def main():
         print("\n".join(users))  # noqa
 
     else:
-        if not username:
-            raise ArgumentError(
-                f"Username in twitter is needed for semantics analysis. Following users are presented in users_base folder: {users}"
-            )
         user_analysis(username, plot, model, users)
 
 

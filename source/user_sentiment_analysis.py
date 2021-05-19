@@ -1,6 +1,7 @@
 from silence_tensorflow import silence_tensorflow
 
 silence_tensorflow()
+
 import calendar
 import pickle  # noqa
 
@@ -91,7 +92,7 @@ def ascii_plots(username: str, model: str):
     fig.barh(counts.Sentiment, list(counts.index), force_ascii=False)
     fig.show()
     with open(
-            f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_ascii.txt", "w"
+        f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_ascii.txt", "w"
     ) as f:
         f.write(fig.get_string())
 
@@ -101,7 +102,7 @@ def ascii_plots(username: str, model: str):
     fig.barh(counts.Sentiment, list(counts.index), force_ascii=False)
     fig.show()
     with open(
-            f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_per_month_ascii.txt",
-            "w",
+        f"./users_base/{username}/{model}/{username}'s_tweets_sentiment_per_month_ascii.txt",
+        "w",
     ) as f:
         f.write(fig.get_string())
