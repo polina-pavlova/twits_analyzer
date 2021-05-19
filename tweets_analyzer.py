@@ -1,4 +1,5 @@
 import argparse
+import logging
 import os
 
 from source.get_user_tweets import download_user_tweets
@@ -15,6 +16,7 @@ def make_arguments_parser():
     parser = argparse.ArgumentParser(
         description="Application for sentiment analysis of tweets published since the beginning of 2021"
     )
+    parser.add_argument("-v", "--verbose", help="Verbose output", action="store_true")
     parser.add_argument(
         "-p",
         "--plot",
@@ -47,7 +49,6 @@ def make_arguments_parser():
     group.add_argument(
         "-l",
         "--users_list",
-        dest="users_in_base",
         action="store_true",
         help="Print list of users presented in base. Default - False.",
     )
@@ -65,7 +66,7 @@ def user_analysis(username: str, plot: str, model: str, users: list):
     else:
         os.mkdir(f"./users_base/{username}/{model}")
         download_user_tweets(username)
-        print(f"Draw charts with @{username} sentiment analysis\n")
+        logging.info(f"Draw charts with @{username} sentiment analysis\n")
         if plot == "ascii":
             ascii_plots(username, model)
         png_plots(username, model)
@@ -79,10 +80,12 @@ def main():
     username = args.username
     plot = args.plot
     model = args.model
-    users_in_base = args.users_in_base
     users = os.listdir("./users_base/")
 
-    if users_in_base:
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+
+    if args.users_list:
         print("Users below are in base:")
         print("\n".join(users))  # noqa
 

@@ -1,9 +1,11 @@
+from logging import info
+
 import aiohttp
 import twint
 
 
 def download_user_tweets(username: str):
-    print(f"Downloading @{username} tweets\n")  # noqa
+    info(f"Downloading @{username} tweets\n")
     c = twint.Config()
     c.Username = username
     c.Since = "2021-1-1"
