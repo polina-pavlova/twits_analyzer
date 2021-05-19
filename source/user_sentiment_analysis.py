@@ -35,7 +35,10 @@ def user_sentiment_neural_network(username: str):
     nn_model = load_model("./model/best_model.hdf5", compile=False)
     nn_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
     user_data = load_user_data(username)
-    tokenizer = Tokenizer()
+    train_data = pd.read_csv('./model/train_data_for_predictions.csv')
+    # tokenizer = Tokenizer()
+    # tokenizer.fit_on_texts(train_data.text)
+    tokenizer = pickle.load(open('./model/tokenizer_for_NN.nn', 'rb'))
     tweets_for_prediction = pad_sequences(
         tokenizer.texts_to_sequences(user_data.tweet), maxlen=30
     )
