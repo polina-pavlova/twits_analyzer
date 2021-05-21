@@ -1,0 +1,9 @@
+('April', 'Positive')     [ 26]  ████████▋
+('April', 'Negative')     [ 15]  █████
+('February', 'Positive')  [120]  ████████████████████████████████████████
+('February', 'Negative')  [ 38]  ████████████▋
+('January', 'Positive')   [  1]  ▍
+('March', 'Positive')     [ 59]  ███████████████████▋
+('March', 'Negative')     [ 16]  █████▍
+('May', 'Positive')       [ 11]  ███▋
+('May', 'Negative')       [  4]  █▍
